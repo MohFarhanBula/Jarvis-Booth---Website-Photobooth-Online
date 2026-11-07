@@ -1,0 +1,125 @@
+-- Jarvis Photobooth DB
+CREATE DATABASE IF NOT EXISTS photoboot_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE photoboot_db;
+
+CREATE TABLE IF NOT EXISTS photos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(12) NOT NULL UNIQUE,
+  image_path VARCHAR(255) NOT NULL,
+  template VARCHAR(50) DEFAULT 'strip4',
+  filter_name VARCHAR(50) DEFAULT 'normal',
+  caption VARCHAR(255) DEFAULT '',
+  likes INT DEFAULT 0,
+  is_public TINYINT NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (created_at),
+  INDEX (likes),
+  INDEX (is_public)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS rooms (
+  code VARCHAR(8) NOT NULL PRIMARY KEY,
+  mode VARCHAR(10) NOT NULL DEFAULT 'duo',
+  status VARCHAR(12) NOT NULL DEFAULT 'lobby',
+  shoot_at BIGINT NULL DEFAULT NULL,
+  template VARCHAR(20) DEFAULT 'polaroid',
+  session_code VARCHAR(8) DEFAULT '',
+  orientation VARCHAR(10) NOT NULL DEFAULT 'portrait',
+  frame_code VARCHAR(30) DEFAULT '',
+  state_rev INT NOT NULL DEFAULT 0,
+  state_by VARCHAR(50) DEFAULT '',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS room_members (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  room_code VARCHAR(8) NOT NULL,
+  nama VARCHAR(50) NOT NULL DEFAULT 'Anon',
+  slot INT NOT NULL DEFAULT 0,
+  peer_id VARCHAR(80) DEFAULT '',
+  is_host TINYINT DEFAULT 0,
+  last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_room_slot (room_code, slot),
+  INDEX (room_code),
+  FOREIGN KEY (room_code) REFERENCES rooms(code) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS room_photos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  room_code VARCHAR(8) NOT NULL,
+  slot INT NOT NULL,
+  image_path VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_room_photo (room_code, slot),
+  INDEX (room_code),
+  FOREIGN KEY (room_code) REFERENCES rooms(code) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NULL DEFAULT NULL,
+  google_id VARCHAR(60) DEFAULT '',
+  email VARCHAR(120) DEFAULT '',
+  nama VARCHAR(80) DEFAULT '',
+  avatar TEXT,
+  role VARCHAR(20) NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_google (google_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS frames (
+  code VARCHAR(30) NOT NULL PRIMARY KEY,
+  nama VARCHAR(80) NOT NULL,
+  kategori VARCHAR(30) DEFAULT 'kartun',
+  layout VARCHAR(20) DEFAULT 'all',
+  bg VARCHAR(20) DEFAULT '#FFD6E6',
+  fg VARCHAR(20) DEFAULT '#B3125F',
+  deco VARCHAR(20) DEFAULT '⭐',
+  overlay_path VARCHAR(255) DEFAULT '',
+  overlays TEXT,
+  harga INT DEFAULT 0,
+  is_active TINYINT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  merchant_ref VARCHAR(40) NOT NULL UNIQUE,
+  frame_code VARCHAR(30) NOT NULL,
+  amount INT NOT NULL,
+  customer_nama VARCHAR(80) DEFAULT 'Tamu',
+  customer_hp VARCHAR(20) DEFAULT '',
+  channel VARCHAR(20) DEFAULT 'QRIS',
+  tripay_ref VARCHAR(60) DEFAULT '',
+  pay_code VARCHAR(80) DEFAULT '',
+  pay_url TEXT,
+  qr_url TEXT,
+  checkout_url TEXT,
+  status VARCHAR(20) DEFAULT 'UNPAID',
+  paid_at TIMESTAMP NULL,
+  session_code VARCHAR(8) DEFAULT '',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (status),
+  INDEX (frame_code),
+  INDEX (session_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(8) NOT NULL UNIQUE,
+  owner_id INT NOT NULL,
+  orientation VARCHAR(10) NOT NULL DEFAULT 'portrait',
+  mode VARCHAR(10) NOT NULL DEFAULT 'solo',
+  status VARCHAR(12) NOT NULL DEFAULT 'created',
+  paid_at TIMESTAMP NULL,
+  expires_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX (owner_id),
+  INDEX (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS settings (
+  kunci VARCHAR(60) NOT NULL PRIMARY KEY,
+  nilai TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,26 @@
+/* SB Admin 2 style — Jarvis */
+:root{ --primary:#4e73df; }
+body{ background:#f8f9fc; font-family:Nunito,-apple-system,"Segoe UI",Roboto,Arial; }
+#wrapper{ display:flex; }
+.sidebar{ width:224px; min-height:100vh; background:linear-gradient(180deg,var(--primary) 10%,#224abe 100%); }
+.sidebar .nav-item .nav-link{ color:#ffffffcc; font-size:.85rem; padding:.75rem 1rem; }
+.sidebar .nav-item .nav-link i{ margin-right:.5rem; color:#ffffff80; }
+.sidebar .nav-item.active .nav-link, .sidebar .nav-item .nav-link:hover{ color:#fff; background:#ffffff22; border-radius:.35rem; }
+.sidebar-brand{ height:4.375rem; color:#fff; font-weight:800; font-size:1rem; }
+.sidebar-heading{ color:#ffffff66; font-size:.7rem; font-weight:800; padding:0 1rem; text-transform:uppercase; }
+.sidebar-divider{ border-top:1px solid #ffffff26; margin:0 1rem 1rem; }
+#content-wrapper{ flex:1; min-width:0; background:#f8f9fc; display:flex; flex-direction:column; }
+#content{ flex:1; }
+.topbar{ height:4.375rem; }
+.img-profile{ width:2rem; height:2rem; display:inline-grid; place-items:center; background:#4e73df; color:#fff; font-weight:800; }
+.card{ border:1px solid #e3e6f0 !important; border-radius:.35rem !important; box-shadow:0 .15rem 1.75rem #21283226 !important; }
+.card-header{ background:#f8f9fc; border-bottom:1px solid #e3e6f0; font-weight:700; color:var(--primary); }
+.border-left-primary{ border-left:.25rem solid #4e73df !important; } .border-left-success{ border-left:.25rem solid #1cc88a !important; }
+.border-left-info{ border-left:.25rem solid #36b9cc !important; } .border-left-warning{ border-left:.25rem solid #f6c23e !important; }
+.border-left-danger{ border-left:.25rem solid #e74a3b !important; }
+.text-gray-800{ color:#5a5c69 !important; } .text-gray-300{ color:#dddfeb !important; }
+table.tbl{ width:100%; font-size:.85rem; }
+table.tbl th{ font-size:.7rem; text-transform:uppercase; color:#858796; cursor:pointer; white-space:nowrap; }
+footer.sticky-footer{ padding:1rem 0; font-size:.8rem; color:#858796; }
+#wrapper.toggled .sidebar{ margin-left:-224px; }
+@media(max-width:768px){ .sidebar{ position:fixed; z-index:1040; } #wrapper.toggled .sidebar{ margin-left:0; } }

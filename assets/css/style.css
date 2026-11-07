@@ -1,0 +1,21 @@
+/* Jarvis Booth - gemoy utilities */
+*{ -webkit-tap-highlight-color: transparent; }
+body{ background-image: radial-gradient(#ffd6e6 1.5px, transparent 1.5px); background-size: 22px 22px; }
+.card-gemoy{ background:#fff; border:3px solid #11111110; border-radius:1.75rem; box-shadow: 0 10px 0 #ffe1ec, 0 20px 40px #0001; }
+.btn-gemoy{ transition:.15s; } .btn-gemoy:active{ transform:scale(.95) rotate(-1deg); }
+.sticker-btn{ transition:.15s; } .sticker-btn:hover{ transform:scale(1.15) rotate(-4deg); }
+video.mirror{ transform: scaleX(-1); }
+.shake{ animation: shake .4s; } @keyframes shake{ 25%{transform:translateX(-5px) rotate(-1deg)} 50%{transform:translateX(5px)} 75%{transform:translateX(-3px)} }
+.floaty{ animation: floaty 3s ease-in-out infinite; } @keyframes floaty{ 50%{transform:translateY(-8px)} }
+.marquee{ overflow:hidden; white-space:nowrap; } .marquee>div{ display:inline-block; animation: marq 18s linear infinite; } @keyframes marq{ to{transform:translateX(-50%)} }
+canvas{ max-width:100%; height:auto; }
+#cvWrap{ width:100%; max-width:100%; overflow:hidden; display:flex; justify-content:center; }
+#cvWrap .canvas-container{ max-width:100% !important; margin:0 auto; }
+#cvWrap canvas{ max-width:100% !important; height:auto !important; }
+#stickers{ scrollbar-width:thin; }
+#stickers::-webkit-scrollbar{ height:6px; width:6px; }
+#stickers::-webkit-scrollbar-thumb{ background:#ffb3cd; border-radius:99px; }
+.sticker-btn{ aspect-ratio:1/1; line-height:1; }
+.count-big{ font-size: clamp(4rem, 18vw, 9rem); text-shadow: 0 6px 0 #fff, 0 12px 0 #ffb3cd; }
+.frame-strip{ background: repeating-linear-gradient(-45deg,#fff 0 12px,#fff6f9 12px 24px); }
+input[type=range]{ accent-color:#ec4899; }
